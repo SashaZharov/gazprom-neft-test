@@ -1,0 +1,23 @@
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.first-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.second-section {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+}
+
+.statistic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
