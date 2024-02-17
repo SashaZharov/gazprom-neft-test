@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactECharts } from './components/Echarts/ReactECharts.tsx';
-import { mockData } from './data/data.ts';
 import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
-import { ChoiceGroup } from '@consta/uikit/ChoiceGroup';
 import { Card } from '@consta/uikit/Card';
-import { Text } from '@consta/uikit/Text';
 import { ChoiceTab } from './components/ChoiceTab/ChoiceTab.tsx';
 import './App.css';
+import { getCurrencyData } from './api/getCurrencyData.ts';
+import { Currency, CurrencyTag, DataItem, FormatData } from './types.ts';
+import { getMinValue } from './utils/getMinValue.ts';
 
 function App() {
-  const dollarData = mockData.filter(
-    (item) => item.indicator === 'Курс доллара'
-  );
-  const euroData = mockData.filter((item) => item.indicator === 'Курс евро');
-  const yuanData = mockData.filter((item) => item.indicator === 'Курс юаня');
+  const [currency, setCurrency] = useState(Currency.usd);
+  const [data, setData] = useState<DataItem[]>([]);
+
+  useEffect(() => {
+    console.log(currency);
+    getCurrencyData(currency).then((answer) => answer && setData(answer));
+    // console.log(getMinValue(formatData(data)));
+  }, [currency]);
 
   // Форматирование данных для ECharts
-  const formatData = (data: any) => {
-    return data.map((item: any) => ({
+  const formatData = (data: DataItem[]) => {
+    return data.map((item: DataItem) => ({
       name: item.month,
       value: item.value,
     }));
@@ -26,14 +29,15 @@ function App() {
   // Конфигурация графика
   const chartOption = {
     grid: {
-      left: '30',
+      left: '20',
       right: '10',
-      bottom: '30',
+      top: '40',
+      bottom: '20',
       containLabel: true,
     },
     xAxis: {
       type: 'category',
-      data: dollarData.map((item) => item.month),
+      data: data.map((item) => item.month),
       axisTick: {
         show: false,
       },
@@ -46,7 +50,7 @@ function App() {
     },
     yAxis: {
       type: 'value',
-      min: 60,
+      min: getMinValue(formatData(data)) - 5,
       splitLine: {
         lineStyle: {
           type: 'dashed',
@@ -55,18 +59,13 @@ function App() {
     },
     tooltip: {
       trigger: 'axis',
-      formatter: function (params: any) {
-        // Форматирование текста тултипа
-        return `<strong>${params[0].name}</strong>: <strong>${params[0].value}</strong>`;
-      },
     },
-
     series: [
       {
-        name: 'Доллар',
+        name: `${data[0]?.indicator}`,
         type: 'line',
         smooth: true,
-        data: formatData(dollarData),
+        data: formatData(data),
         showSymbol: false,
         lineStyle: {
           normal: {
@@ -84,19 +83,29 @@ function App() {
 
   return (
     <Theme preset={presetGpnDefault}>
-      <Card verticalSpace="m" horizontalSpace="m" className="card">
-        <div className="first-section">
-          <div>Курс доллора</div>
-          <div className="tab">
-            <ChoiceTab />
+      <div className="root-container">
+        <Card verticalSpace="xs" horizontalSpace="xs" className="card">
+          <div className="header">
+            <div className="title">
+              {data[0]?.indicator.toUpperCase()}, {CurrencyTag[currency]}/₽
+            </div>
+            <div className="tab">
+              <ChoiceTab value={currency} setValue={setCurrency} />
+            </div>
           </div>
-        </div>
 
-        <div className="second-section">
-          <ReactECharts option={chartOption} style={{ height: '400px' }} />
-          <div className="statistic">66</div>
-        </div>
-      </Card>
+          <div className="chart-section">
+            <ReactECharts option={chartOption} style={{ height: '400px' }} />
+            <div className="statistics">
+              <div className="subtitle">Среднее за период</div>
+              <div className="statistic-cell">
+                <div className="value">66,7</div>{' '}
+                <div className="symbol">₽</div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
     </Theme>
   );
 }

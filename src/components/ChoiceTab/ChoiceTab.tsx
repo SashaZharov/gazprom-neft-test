@@ -1,19 +1,22 @@
 import { ChoiceGroup } from '@consta/uikit/ChoiceGroup';
 import { useState } from 'react';
+import { CurrencyTag, Currency } from '../../types';
 
-type Item = string;
+const items: Currency[] = [Currency.usd, Currency.eur, Currency.cny];
 
-const items: Item[] = ['$', '€', '¥'];
+interface IChoiceTab {
+  value: any;
+  setValue: any;
+}
 
-export const ChoiceTab = () => {
-  const [value, setValue] = useState<string | null>(items[0]);
+export const ChoiceTab: React.FC<IChoiceTab> = ({ value, setValue }) => {
   return (
     <ChoiceGroup
-      size="s"
+      size="xs"
       value={value}
       onChange={({ value }) => setValue(value)}
       items={items}
-      getItemLabel={(item) => item}
+      getItemLabel={(item: Currency) => CurrencyTag[item]}
       multiple={false}
       name="ChoiceGroup"
     />

@@ -1,23 +1,73 @@
+.root-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
 .card {
   display: flex;
   flex-direction: column;
+  width: 1200px;
+  max-width: 1200px;
 }
 
-.first-section {
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.second-section {
+.chart-section {
   display: grid;
   grid-template-columns: 5fr 1fr;
 }
 
-.statistic {
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 30px;
+  font-size: 20px;
+  color: #002033;
+  margin-left: 5px;
+}
+
+.statistics {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+  gap: 15px
 }
 
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  color: #667985;
+}
+
+.statistic-cell {
+  display: flex;
+  flex-direction: row;
+}
+
+.value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  color: #F38B00;
+}
+
+.symbol {
+  display: flex;
+  align-self: end;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #667985;
+  margin-bottom: 7px;
+}
