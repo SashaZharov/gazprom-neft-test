@@ -1,15 +1,17 @@
 import { DataItem } from '../../types';
-import { formatterTooltip } from '../../utils/formatterToltip';
 import { getFormatData } from '../../utils/getFormatData';
+import { getMaxValue } from '../../utils/getMaxValue';
 import { getMinValue } from '../../utils/getMinValue';
 import { ReactECharts } from '../Echarts/ReactECharts';
+import { Tooltip } from '../Tooltip';
 
 interface IChart {
   data: DataItem[];
 }
 
 export const Chart: React.FC<IChart> = ({ data }) => {
-  const minValue = getMinValue(getFormatData(data)) - 5;
+  const minValue = getMinValue(getFormatData(data));
+  const maxValue = getMaxValue(getFormatData(data));
   const name = data[0]?.indicator;
   const formatData = getFormatData(data);
 
@@ -37,6 +39,7 @@ export const Chart: React.FC<IChart> = ({ data }) => {
     yAxis: {
       type: 'value',
       min: minValue,
+      max: maxValue,
       splitLine: {
         lineStyle: {
           type: 'dashed',
@@ -45,7 +48,7 @@ export const Chart: React.FC<IChart> = ({ data }) => {
     },
     tooltip: {
       trigger: 'axis',
-      formatter: formatterTooltip(data),
+      formatter: Tooltip(data),
     },
     series: [
       {
@@ -67,9 +70,6 @@ export const Chart: React.FC<IChart> = ({ data }) => {
       },
     ],
   };
-  return (
-    <>
-      <ReactECharts option={chartOption} style={{ height: '400px' }} />
-    </>
-  );
+
+  return <ReactECharts option={chartOption} style={{ height: '350px' }} />;
 };

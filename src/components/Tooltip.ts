@@ -1,4 +1,4 @@
-export const formatterTooltip = (params: any) => {
+export const Tooltip = (params: any) => {
   const data = params[0] && params[0].data;
   if (!data) return '';
 
