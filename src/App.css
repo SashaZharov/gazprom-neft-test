@@ -37,7 +37,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 30px);
   gap: 15px
 }
 
@@ -70,4 +70,5 @@
   font-size: 20px;
   color: #667985;
   margin-bottom: 7px;
+  margin-left: 10px;
 }
