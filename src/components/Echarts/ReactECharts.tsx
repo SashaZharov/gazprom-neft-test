@@ -19,13 +19,11 @@ export interface ReactEChartsProps {
   forceResize?: boolean;
 }
 
-
 export interface ILegendselectchangedParams {
   name: string;
   selected: Record<string, boolean>;
   type: string;
 }
-
 
 export function ReactECharts({
   option,
@@ -62,7 +60,7 @@ export function ReactECharts({
       chart?.dispose();
       window.removeEventListener('resize', resizeChart);
     };
-  }, [theme]);
+  }, [forceResize, theme]);
 
   useEffect(() => {
     // Update chart

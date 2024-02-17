@@ -1,8 +1,7 @@
-import { FormatData } from '../types';
+import { ChartDataItem } from '../types';
 
-export const getMaxValue = (array: FormatData[]) =>
-  array.reduce(
-    (maxValue: number, currentItem: FormatData) =>
-      Math.max(maxValue, currentItem.value),
-    -Infinity
-  );
+export const getMaxValue = (array: ChartDataItem[]) => {
+  return array.reduce((maxValue: number, currentItem: ChartDataItem) => {
+    return Math.max(maxValue, currentItem.value);
+  }, 0);
+};

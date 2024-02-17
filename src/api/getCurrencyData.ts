@@ -1,17 +1,13 @@
-import { Currency, ResponseGetCurrencyDataType } from '../types';
+import { API_URL } from '../constants';
+import { ResponseGetCurrencyDataType } from '../types';
 
-export const getCurrencyData = async (currency: Currency) => {
+export const getCurrencyData = async (): Promise<
+  ResponseGetCurrencyDataType | undefined
+> => {
   try {
-    const response = await fetch(
-      'https://65cfdcf8bdb50d5e5f5be89d.mockapi.io/currency_data',
-      {
-        cache: 'force-cache',
-      }
-    );
-    const parseResponse: ResponseGetCurrencyDataType = await response.json();
-    const data = parseResponse.at(0);
+    const response = await fetch(`${API_URL}/currency_data`);
 
-    return data && data[currency];
+    return await response.json();
   } catch (error) {
     console.error(error);
   }

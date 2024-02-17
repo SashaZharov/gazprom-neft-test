@@ -17,9 +17,11 @@ export type DataItem = {
   value: number;
 };
 
-export type FormatData = {
+export type ChartDataItem = {
   name: string;
   value: number;
 };
 
-export type ResponseGetCurrencyDataType = Array<Record<Currency, DataItem[]>>;
+export type ResponseGetCurrencyDataType = DataItem[];
+
+export type CurrencyData = Record<Currency, DataItem[]>;

@@ -1,53 +1,55 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
+import { useState, useEffect, FC } from 'react';
 import { Card } from '@consta/uikit/Card';
-import { ChoiceTab } from './components/ChoiceTab/ChoiceTab.tsx';
-import { getCurrencyData } from './api/getCurrencyData.ts';
-import { Currency, CurrencyTag, DataItem } from './types.ts';
-import { Chart } from './components/Сhart/Chart.tsx';
-import { getAverageValue } from './utils/getAverageValue.ts';
+import { CURRENCY_TO_CURRENCY_TITLE } from './constants';
+import { getAverageValue, parseData } from './utils';
+import { ChoiceTab, Chart } from './components';
+import { getCurrencyData } from './api';
+import { Currency, CurrencyData, CurrencyTag } from './types';
 
-function App() {
+import './App.css';
+
+const App: FC = () => {
   const [currency, setCurrency] = useState(Currency.usd);
-  const [data, setData] = useState<DataItem[]>([]);
-
-  const averageValue = getAverageValue(data).toFixed(1).replace('.', ',');
-  const title = data[0]?.indicator.toUpperCase();
+  const [data, setData] = useState<Partial<CurrencyData>>({});
+  const currentData = data[currency];
+  const averageValue = currentData && getAverageValue(currentData);
+  const formatedAvrgValue = averageValue?.toFixed(1).replace('.', ',');
+  const title = CURRENCY_TO_CURRENCY_TITLE[currency].toUpperCase();
   const currencySymbol = CurrencyTag[currency];
 
   useEffect(() => {
-    // Get data from api
-    getCurrencyData(currency).then((answer) => answer && setData(answer));
-  }, [currency]);
+    getCurrencyData().then((res) => {
+      res && setData(parseData(res));
+    });
+  }, []);
 
   return (
-    <Theme preset={presetGpnDefault}>
-      <div className="root-container">
-        <Card verticalSpace="xs" horizontalSpace="xs" className="card">
-          <div className="header">
-            <div className="title">
-              {title}, {currencySymbol}/₽
-            </div>
-            <div className="tab">
-              <ChoiceTab value={currency} setValue={setCurrency} />
-            </div>
-          </div>
+    <div className="App">
+      <Card verticalSpace="xs" horizontalSpace="xs" className="App__card">
+        <div className="App__cardHeader">
+          <h1 className="App__cardHeaderTitle">
+            {title}, {currencySymbol}/₽
+          </h1>
+          <ChoiceTab value={currency} setValue={setCurrency} />
+        </div>
 
-          <div className="chart-section">
-            <Chart data={data} />
-            <div className="statistics">
-              <div className="subtitle">Среднее за период</div>
-              <div className="statistic-cell">
-                <div className="value">{averageValue}</div>
-                <div className="symbol">₽</div>
-              </div>
+        <div className="App__chartContainer">
+          <Chart currency={currency} data={currentData || []} />
+          <div className="App__chartStatistics">
+            <div className="App__chartStatisticsSubtitle">
+              Среднее за период
+            </div>
+            <div className="App__chartStatisticsCell">
+              <h3 className="App__chartStatisticsCellValue">
+                {formatedAvrgValue || '--,-'}
+              </h3>
+              <p className="App__chartStatisticsCellSymbol">₽</p>
             </div>
           </div>
-        </Card>
-      </div>
-    </Theme>
+        </div>
+      </Card>
+    </div>
   );
-}
+};
 
 export default App;

@@ -1,11 +1,13 @@
-@font-face {
-  font-weight: 400;
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Medium.woff2"), local(Inter);
+body,
+html,
+#root {
+  margin: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  --colorTextSecondary: #667985;
 }
 
-@font-face {
-  font-weight: 700; 
-  font-family: "Inter";
-  src: url("./assets/fonts/Inter-Bold.woff2"), local(Inter);
+.Theme {
+  width: 100%;
 }
