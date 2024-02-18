@@ -1,4 +1,5 @@
 import { useState, useEffect, FC } from 'react';
+import { Loader } from '@consta/uikit/Loader';
 import { Card } from '@consta/uikit/Card';
 import { CURRENCY_TO_CURRENCY_TITLE } from './constants';
 import { getAverageValue, parseData } from './utils';
@@ -34,7 +35,13 @@ const App: FC = () => {
         </div>
 
         <div className="App__chartContainer">
-          <Chart currency={currency} data={currentData || []} />
+          {currentData ? (
+            <Chart currency={currency} data={currentData} />
+          ) : (
+            <div className="App__chartLoader">
+              <Loader size="m" />
+            </div>
+          )}
           <div className="App__chartStatistics">
             <div className="App__chartStatisticsSubtitle">
               Среднее за период

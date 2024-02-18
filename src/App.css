@@ -26,6 +26,18 @@
   grid-template-columns: 5fr 1fr;
 }
 
+.App__chartLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+.Loader:after, .Loader::before, .Loader-Dot {
+  background-color: var(--colorTextAccent);
+}
+
 .App__cardHeaderTitle {
   font-weight: 700;
   line-height: 30px;
@@ -60,7 +72,7 @@
 .App__chartStatisticsCellValue {
   font-weight: 400;
   font-size: 48px;
-  color: #f38b00;
+  color: var(--colorTextAccent);
   margin: 0;
 }
 
